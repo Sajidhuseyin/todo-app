@@ -1,21 +1,30 @@
 :root {
-  --bg-start: #667eea;
-  --bg-end: #764ba2;
-  --card-bg: rgba(255, 255, 255, 0.92);
-  --text-primary: #1e293b;
-  --text-muted: #64748b;
-  --accent: #667eea;
-  --accent-hover: #5a67d8;
-  --success: #22c55e;
-  --success-hover: #16a34a;
+  --bg-start: #4338ca;
+  --bg-mid: #7c3aed;
+  --bg-end: #db2777;
+  --card-gradient: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #f5f3ff 20%,
+    #ede9fe 45%,
+    #fce7f3 70%,
+    #fff7ed 100%
+  );
+  --text-primary: #1e1b4b;
+  --text-muted: #6b7280;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+  --success: #16a34a;
+  --success-hover: #15803d;
   --danger: #ef4444;
   --danger-hover: #dc2626;
-  --surface: #f1f5f9;
-  --surface-hover: #e2e8f0;
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-hover: rgba(255, 255, 255, 0.75);
   --radius: 12px;
-  --radius-lg: 20px;
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --radius-lg: 24px;
+  --shadow: 0 25px 80px rgba(67, 56, 202, 0.35);
+  --shadow-sm: 0 6px 20px rgba(99, 102, 241, 0.15);
 }
 
 * {
@@ -27,9 +36,9 @@
 body {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-  background-size: 200% 200%;
-  animation: gradientShift 10s ease infinite;
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end));
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
   min-height: 100vh;
 }
 
@@ -63,14 +72,55 @@ body {
 }
 
 .todo-card {
+  position: relative;
   width: 100%;
   max-width: 480px;
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
+  background: var(--card-gradient);
+  background-size: 200% 200%;
+  animation: cardGradient 8s ease infinite;
   padding: 32px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+}
+
+.todo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 0%,
+    rgba(255, 255, 255, 0.8) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.todo-card::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -30%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.todo-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes cardGradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .header {
@@ -81,6 +131,16 @@ body {
 .header-icon {
   font-size: 2rem;
   margin-bottom: 8px;
+  width: 52px;
+  height: 52px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: var(--accent-gradient);
+  color: white;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
 }
 
 .header h1 {
@@ -88,6 +148,10 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 6px;
+  background: linear-gradient(135deg, #4338ca, #a855f7, #db2777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-subtitle {
@@ -102,8 +166,10 @@ body {
   font-size: 0.8rem;
   color: var(--text-muted);
   background: var(--surface);
+  backdrop-filter: blur(8px);
   padding: 6px 14px;
   border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .task-stats span {
@@ -118,18 +184,20 @@ body {
 .input-section input {
   flex: 1;
   padding: 14px 16px;
-  border: 2px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
   outline: none;
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(8px);
   font-size: 0.95rem;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .input-section input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
 }
 
 .input-section input::placeholder {
@@ -142,16 +210,18 @@ body {
   border-radius: var(--radius);
   cursor: pointer;
   color: white;
-  background: var(--accent);
+  background: var(--accent-gradient);
   font-size: 0.95rem;
   font-weight: 600;
   font-family: inherit;
-  transition: background 0.2s, transform 0.15s;
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
   white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
+  filter: brightness(1.08);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
 .btn-primary:active {
@@ -166,16 +236,17 @@ body {
 }
 
 .filter-buttons button {
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   padding: 8px 16px;
   border-radius: 999px;
   cursor: pointer;
   background: var(--surface);
+  backdrop-filter: blur(8px);
   color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 500;
   font-family: inherit;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
 .filter-buttons button:hover {
@@ -183,8 +254,10 @@ body {
 }
 
 .filter-buttons button.active {
-  background: var(--accent);
+  background: var(--accent-gradient);
   color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
 .task-list {
@@ -200,14 +273,17 @@ body {
   align-items: center;
   gap: 12px;
   background: var(--surface);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   padding: 14px 16px;
   border-radius: var(--radius);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
   animation: slideIn 0.3s ease;
 }
 
 .task:hover {
   transform: translateY(-1px);
+  background: var(--surface-hover);
   box-shadow: var(--shadow-sm);
 }
 
@@ -241,17 +317,18 @@ body {
 .checkmark {
   width: 22px;
   height: 22px;
-  border: 2px solid #cbd5e1;
+  border: 2px solid rgba(99, 102, 241, 0.35);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .task-checkbox input:checked + .checkmark {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-gradient);
+  border-color: transparent;
 }
 
 .task-checkbox input:checked + .checkmark::after {
